@@ -1,7 +1,7 @@
 # app.py
 
 import streamlit as st
-import whisper
+from faster_whisper import WhisperModel
 from openai import OpenAI
 import os
 
@@ -9,14 +9,16 @@ import os
 # --- WHISPER MODEL LOADING ---
 @st.cache_resource
 def load_whisper():
-    return whisper.load_model("base")
+    model = WhisperModel("base", device="cpu", compute_type="int8")
+    return model
 
 
 def transcribe_audio(model, audio_path):
-    """Transcribe audio using Whisper."""
+    """Transcribe audio using Faster-Whisper."""
     try:
-        result = model.transcribe(audio_path, language="en")  # Default to English
-        return result["text"]
+        segments, info = model.transcribe(audio_path, language="en")
+        transcript = "".join([segment.text for segment in segments])
+        return transcript
     except Exception as e:
         st.error(f"⚠️ Transcription failed: {str(e)}")
         return ""
@@ -98,7 +100,7 @@ def format_with_openai(prompt, api_key):
 st.set_page_config(page_title="🎤 Lecture Voice-to-Notes Generator", layout="centered")
 
 st.title("🎤 Lecture Voice-to-Notes Generator")
-st.markdown("_Uses Whisper + Ollama/OpenAI for Smart Formatting_")
+st.markdown("_Uses Faster-Whisper + Ollama/OpenAI for Smart Formatting_")
 
 # --- MODE SELECTION ---
 mode = st.radio("Choose Processing Mode:", ("🧠 Local LLM (Ollama Phi-3)", "☁️ OpenAI API"))
