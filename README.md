@@ -6,6 +6,10 @@
 
 Convert lecture recordings into structured class notes using AI — fully offline or with cloud APIs.
 
+# Run streamlit app
+* Click here 
+[Streamlit](https://lecture-voice-to-notes-generate.streamlit.app)
+
 ## ✨ Features
 
 - 🎧 Transcribe audio files (MP3, WAV, M4A) using Whisper
