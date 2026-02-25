@@ -12,32 +12,56 @@ os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"
 
 
+
 # --- DETECT IF RUNNING IN CLOUD ---
 def is_deployed():
     return "STREAMLIT_SERVER_HEADLESS" in os.environ
 
 
-# --- WHISPER MODEL LOADER (AUTO DOWNLOAD IF MISSING) ---
 @st.cache_resource
 def load_whisper():
+    import os
+    from faster_whisper import WhisperModel
+
     model_path = "./models/faster-whisper-base"
 
-    if not os.path.exists(model_path):
-        with st.spinner("📥 Downloading Whisper model (one-time setup)..."):
+    # Check if already exists and valid
+    if os.path.exists(model_path):
+        config_file = os.path.join(model_path, "config.json")
+        if os.path.isfile(config_file):
             try:
-                snapshot_dir = snapshot_download(
-                    repo_id="Systran/faster-whisper-base",
-                    revision="main"
-                )
-                shutil.copytree(snapshot_dir, model_path)
-                st.success("✅ Whisper model downloaded successfully!")
+                model = WhisperModel(model_path, device="cpu", compute_type="int8")
+                return model
             except Exception as e:
-                st.error(f"🚫 Failed to download model: {str(e)}")
-                st.stop()
+                st.warning(f"⚠️ Corrupt model detected. Re-downloading... ({str(e)})")
+                import shutil
+                shutil.rmtree(model_path, ignore_errors=True)
 
-    from faster_whisper import WhisperModel
-    model = WhisperModel(model_path, device="cpu", compute_type="int8")
-    return model
+    # Download fresh copy
+    with st.spinner("📥 Downloading Whisper model (one-time setup)..."):
+        try:
+            from huggingface_hub import snapshot_download
+            import shutil
+
+            snapshot_dir = snapshot_download(
+                repo_id="Systran/faster-whisper-base",
+                revision="main"
+            )
+
+            # Ensure target directory is clean
+            if os.path.exists(model_path):
+                shutil.rmtree(model_path)
+            shutil.copytree(snapshot_dir, model_path)
+
+            st.success("✅ Whisper model downloaded successfully!")
+
+            model = WhisperModel(model_path, device="cpu", compute_type="int8")
+            return model
+
+        except Exception as e:
+            st.error(f"🚫 Failed to download/load model: {str(e)}")
+            st.stop()
+
 
 
 def transcribe_audio(model, audio_path):
@@ -370,3 +394,4 @@ with tab6:
         st.session_state.transcript
     ]):
         st.info("📝 Generate materials first to enable downloads.")
+
