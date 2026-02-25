@@ -4,7 +4,6 @@ import streamlit as st
 import requests
 import os
 import shutil
-from faster_whisper import WhisperModel
 from huggingface_hub import snapshot_download
 
 
@@ -18,27 +17,23 @@ def is_deployed():
     return "STREAMLIT_SERVER_HEADLESS" in os.environ
 
 
-# --- WHISPER MODEL LOADING ---
+# --- WHISPER MODEL LOADER (AUTO DOWNLOAD IF MISSING) ---
 @st.cache_resource
 def load_whisper():
     model_path = "./models/faster-whisper-base"
 
-    # If not found, trigger download
     if not os.path.exists(model_path):
-        st.warning("🔄 Model not found. Starting download...")
-        try:
-            from huggingface_hub import snapshot_download
-            import shutil
-
-            snapshot_dir = snapshot_download(
-                repo_id="Systran/faster-whisper-base",
-                revision="main"
-            )
-            shutil.copytree(snapshot_dir, model_path)
-            st.success("✅ Model downloaded successfully!")
-        except Exception as e:
-            st.error(f"🚫 Failed to download model: {e}")
-            st.stop()
+        with st.spinner("📥 Downloading Whisper model (one-time setup)..."):
+            try:
+                snapshot_dir = snapshot_download(
+                    repo_id="Systran/faster-whisper-base",
+                    revision="main"
+                )
+                shutil.copytree(snapshot_dir, model_path)
+                st.success("✅ Whisper model downloaded successfully!")
+            except Exception as e:
+                st.error(f"🚫 Failed to download model: {str(e)}")
+                st.stop()
 
     from faster_whisper import WhisperModel
     model = WhisperModel(model_path, device="cpu", compute_type="int8")
@@ -128,25 +123,6 @@ def is_valid_openrouter_key(api_key: str) -> bool:
         return False
 
 
-# --- DOWNLOAD MODEL SCRIPT (FOR LOCAL USE ONLY) ---
-def download_model_locally():
-    model_dir = "./models/faster-whisper-base"
-    repo_id = "Systran/faster-whisper-base"
-
-    if not os.path.exists(model_dir):
-        with st.spinner("📥 Downloading Whisper model (one-time setup)..."):
-            snapshot_dir = snapshot_download(
-                repo_id=repo_id,
-                revision="main",
-                cache_dir="./hf_cache"
-            )
-            shutil.copytree(snapshot_dir, model_dir)
-            shutil.rmtree("./hf_cache", ignore_errors=True)
-        st.success("✅ Model downloaded and saved.")
-    else:
-        st.info("📁 Model already exists.")
-
-
 # --- CHATBOT FUNCTION ---
 def ask_question_about_lecture(question, context, api_key):
     full_prompt = f"""
@@ -180,11 +156,6 @@ st.set_page_config(page_title="🎤 Lecture Voice-to-Notes Generator", layout="w
 st.title("🎤 Lecture Voice-to-Notes Generator")
 st.markdown("_Uses Faster-Whisper + OpenRouter API for Smart Formatting & Learning_")
 
-# --- DOWNLOAD MODEL BUTTON (LOCAL ONLY) ---
-if not is_deployed():
-    if st.button("📥 Download Model (One-Time Setup)"):
-        download_model_locally()
-
 # --- FORCE OPENROUTER MODE IN CLOUD ---
 mode = "☁️ OpenRouter API"
 if is_deployed():
@@ -205,11 +176,11 @@ whisper_model = load_whisper()
 
 # --- MAIN TABS ---
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-    "🎧 Audio",
-    "📝 Text",
-    "🧩 Quiz",
-    "📚 Topics",
-    "💬 Chat",
+    "🎧 Audio", 
+    "📝 Text", 
+    "🧩 Quiz", 
+    "📚 Topics", 
+    "💬 Chat", 
     "⬇️ Download"
 ])
 
