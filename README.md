@@ -4,102 +4,75 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-Latest-brightgreen)](https://streamlit.io/)
 [![License](https://img.shields.io/github/license/yourusername/lecture-to-notes)](LICENSE)
 
-Convert lecture recordings into structured class notes using AI — fully offline or with cloud APIs.
+Convert lecture recordings into structured class notes using AI — fully offline-capable and cloud-ready.
 
-# Run streamlit app
-* Click here 
-[Streamlit](https://lecture-voice-to-notes-generate.streamlit.app)
 
 ## ✨ Features
 
-- 🎧 Transcribe audio files (MP3, WAV, M4A) using Whisper
-- 🧠 Format transcripts into clean class notes using:
-  - Local LLM: [Ollama Phi-3](https://ollama.com/library/phi3)
-  - Remote API: OpenAI GPT models
-- 📥 Downloadable notes in Markdown format
-- 💻 Runs locally or connects to the cloud
+- 🎧 **Audio Transcription** – Upload MP3, WAV, M4A files
+- 🧠 **Smart Note Generation** – Structured class notes with titles, key points, and summaries
+- ❓ **Quiz Generator** – Auto-generate multiple-choice questions
+- 📚 **Topic Suggestions** – Discover related academic topics
+- 💬 **Chatbot Assistant** – Ask questions about the lecture content
+- ⬇️ **Download Center** – Export notes, quizzes, and transcripts
+- 🌐 **Cloud Deployment Ready** – Works on Streamlit Community Cloud
 
 ## 🧰 Requirements
 
 ### Software
 
 - **Python 3.9+**
-- [FFmpeg](https://ffmpeg.org/download.html) (for MP3/M4A support)
-- [Ollama](https://ollama.com/download) (for local Phi-3 usage)
+- [OpenRouter API Key](https://openrouter.ai/keys) (free tier available)
+- Pre-downloaded Whisper model (included in repo)
 
 ### Hardware
 
 - Minimum: CPU with 4GB RAM
-- Recommended: GPU for faster Whisper processing
+- Recommended: Any modern laptop/desktop
 
 ## 🚀 Quickstart
 
-### 1. Clone the Repo
+### Option 1: Use Pre-downloaded Model (Fastest)
 
-```bash
-git clone https://github.com/yourusername/lecture-to-notes.git
-cd lecture-to-notes
-```
-
-# 2. Create Virtual Environment (Optional but Recommended)
-
-```bash
-python -m venv venv
-source venv/bin/activate   # Linux/macOS
-venv\Scripts\activate      # Windows
-```
----
-# 3. Install Dependencies
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/yourusername/lecture-to-notes.git
+   cd lecture-to-notes
+   ```
+   
+## Install dependencies:
 ```bash
 pip install -r requirements.txt
-```
----
-# 4. Install FFmpeg
-Windows:
-Download from https://www.gyan.dev/ffmpeg/builds/
-Add `ffmpeg.exe` to system PATH.
 
-#### macOS:
-```bash
-brew install ffmpeg
 ```
-#### Linux (Ubuntu/Debian):
-```bash
-sudo apt update && sudo apt install ffmpeg
-```
----
-# 5. Set Up Ollama (Local Mode Only)
-Install Ollama from: https://ollama.com/download
+## Run the app:
 
-Pull Phi-3 model:
-```bash
-ollama pull phi3
-ollama serve
-```
-
-# ▶️ Run the App
 ```bash
 streamlit run app.py
 ```
-Open http://localhost:8501 in your browser.
+## Option 2: Download Model Locally
+If you prefer to download the model yourself:
 
-# 📦 Project Structure
-```text
-lecture-to-notes/
-├── app.py              # Main application
-├── requirements.txt    # Python dependencies
-├── README.md           # This file
-└── LICENSE             # MIT License
+1. Run once:
+
+```bash
+python download_model.py
+```
+
+2. Then run:
+
+```bash
+streamlit run app.py
 
 ```
-# 🛡️ License
-This project is licensed under the MIT License – see the LICENSE [blocked] file for details.
 
-# 🤝 Contributing
-Contributions welcome! Please read CONTRIBUTING.md [blocked] for details on our code of conduct, and the process for submitting pull requests.
+## 🛡️ License
 
-# 🙌 Author
+This project is licensed under the MIT License – see the LICENSE file for details.
+
+## 🤝 Contributing
+Contributions welcome! Please read CONTRIBUTING.md  for details.
+
+## 🙌 Author
 PRIYANSU ROUT
-
-[Linkedin](https://www.linkedin.com/in/priyansu-rout-06a40834b/)
 
