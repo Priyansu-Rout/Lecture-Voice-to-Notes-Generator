@@ -22,9 +22,25 @@ def is_deployed():
 @st.cache_resource
 def load_whisper():
     model_path = "./models/faster-whisper-base"
+
+    # If not found, trigger download
     if not os.path.exists(model_path):
-        st.error("🚫 Model not found. Please ensure `models/faster-whisper-base` exists.")
-        st.stop()
+        st.warning("🔄 Model not found. Starting download...")
+        try:
+            from huggingface_hub import snapshot_download
+            import shutil
+
+            snapshot_dir = snapshot_download(
+                repo_id="Systran/faster-whisper-base",
+                revision="main"
+            )
+            shutil.copytree(snapshot_dir, model_path)
+            st.success("✅ Model downloaded successfully!")
+        except Exception as e:
+            st.error(f"🚫 Failed to download model: {e}")
+            st.stop()
+
+    from faster_whisper import WhisperModel
     model = WhisperModel(model_path, device="cpu", compute_type="int8")
     return model
 
