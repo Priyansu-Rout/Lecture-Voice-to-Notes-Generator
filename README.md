@@ -2,7 +2,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Latest-brightgreen)](https://streamlit.io/)
-[![License](https://img.shields.io/github/license/yourusername/lecture-to-notes)](LICENSE)
 
 Convert lecture recordings into structured class notes using AI — fully offline-capable and cloud-ready.
 
@@ -75,4 +74,5 @@ Contributions welcome! Please read CONTRIBUTING.md  for details.
 
 ## 🙌 Author
 PRIYANSU ROUT
+
 
