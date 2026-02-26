@@ -1,7 +1,10 @@
 # 🎤 Lecture Voice-to-Notes Generator
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/downloads/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-Latest-brightgreen)](https://streamlit.io/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Latest-brightgreen)](https://lecture-voice-to-notes-generate.streamlit.app/)
+[![Linkedin](https://i.sstatic.net/gVE0j.png) LinkedIn](https://www.linkedin.com/in/priyansu-rout-06a40834b )
+
+
 
 Convert lecture recordings into structured class notes using AI — fully offline-capable and cloud-ready.
 
@@ -35,7 +38,7 @@ Convert lecture recordings into structured class notes using AI — fully offlin
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/lecture-to-notes.git
+   https://github.com/Priyansu-Rout/Lecture-Voice-to-Notes-Generator.git
    cd lecture-to-notes
    ```
    
@@ -74,5 +77,7 @@ Contributions welcome! Please read CONTRIBUTING.md  for details.
 
 ## 🙌 Author
 PRIYANSU ROUT
+
+[Linkedin](https://www.linkedin.com/in/priyansu-rout-06a40834b )
 
 
